@@ -127,7 +127,16 @@ pub fn trim_deep_ones(
     let mut result: Vec<(String, u64)> = vec![];
 
     for name in top_level_names {
-        let my_max_depth = name.matches('/').count() + max_depth as usize;
+        // Annoying edge case - we do not remove the last / of a root run
+        // but we must have  no trailing slashes
+        let slash_count = {
+            if name == "/" {
+                0
+            } else {
+                name.matches('/').count()
+            }
+        };
+        let my_max_depth = slash_count + max_depth as usize;
         let name_ref: &str = name.as_ref();
 
         for &(ref k, ref v) in input.iter() {
