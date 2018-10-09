@@ -57,7 +57,12 @@ fn display_node<S: Into<String>>(
         None => println!("Can not find path: {}", node_to_print),
         Some(size) => {
             let ntp: &str = node_to_print.as_ref();
-            let num_slashes = node_to_print.matches('/').count();
+            let num_slashes =
+                if node_to_print == "/" {
+                    0
+                } else {
+                    node_to_print.matches('/').count()
+                };
 
             let is = indentation_str.into();
             print_this_node(ntp, size, is_biggest, short_paths, is.as_ref());

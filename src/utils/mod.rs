@@ -1,6 +1,7 @@
 use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::collections::HashSet;
+use std::path::PathBuf;
 
 use walkdir::WalkDir;
 
@@ -49,11 +50,7 @@ pub fn get_dir_tree(
 }
 
 fn strip_end_slashes(s: &str) -> String {
-    let mut new_name = String::from(s);
-    while new_name.chars().last() == Some('/') && new_name.len() != 1 {
-        new_name.pop();
-    }
-    new_name
+    PathBuf::from(s).canonicalize().unwrap().to_string_lossy().to_string()
 }
 
 fn examine_dir(
